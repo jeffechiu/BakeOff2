@@ -11,6 +11,7 @@ float errorPenalty = 0.5f; //for every error, add this value to mean time
 int startTime = 0; // time starts when the first click is captured
 int finishTime = 0; //records the time of the final click
 boolean userDone = false; //is the user done
+boolean circlesIn = false;
 
 final int screenPPI = 72; //what is the DPI of the screen you are using
 //you can test this by drawing a 72x72 pixel rectangle in code, and then confirming with a ruler it is 1x1 inch. 
@@ -148,6 +149,25 @@ void scaffoldControlLogic()
     logoY+=inchToPix(.02f);
 }
 
+void expandCirclesIn()
+{
+  fill(255, 255, 255);
+  circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+}
+
+void expandCirclesOut()
+{
+  fill(255, 255, 255, 0);
+  circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+}
+
+
 
 void mousePressed()
 {
@@ -155,7 +175,59 @@ void mousePressed()
   {
     startTime = millis();
     println("time started!");
+    
   }
+  
+  
+}
+
+
+void mouseDragged()
+{
+  
+  /*
+  if (mouseX > width/2+logoX-logoZ/2-inchToPix(.075f) && mouseX < width/2+logoX-logoZ/2+inchToPix(.075f) && mouseY > height/2+logoY-logoZ/2-inchToPix(.075f) &&  mouseY < height/2+logoY-logoZ/2+inchToPix(.075f)) {
+    print("it happened");
+    float distance = dist(mouseX, mouseY, width/2+logoX-logoZ/2, height/2+logoX-logoZ/2);
+    logoZ = constrain(logoZ+distance, .01, inchToPix(4f)); //leave min and max alone!
+    float newX = (mouseX+(width/2+logoX-logoZ/2))/2 - width/2 + logoZ/2;
+    float newY = (mouseY+(height/2+logoY-logoZ/2))/2 - height/2 + logoZ/2;
+    logoX = newX;
+    logoY = newY;
+    print(logoZ);
+    
+  }
+  */
+  
+  //dragging movement
+  
+  if (mouseX > width/2+logoX-(logoZ/2) && mouseX < width/2+logoX+(logoZ/2) && mouseY > height/2+logoY-(logoZ/2) && mouseY < height/2+logoY+(logoZ/2)) {
+
+    logoX = mouseX-width/2;
+    logoY = mouseY-height/2;
+    /*
+    if (circlesIn == false) {
+          print("happened");
+          fill(255, 255, 255);
+          circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+          circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+          circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+          circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+          circlesIn = true;
+        }
+        else {
+        fill(255, 255, 255, 0);
+        circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+        circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+        circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+        circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+        circlesIn = false;
+        }
+        */
+  }
+
+  
+  
 }
 
 
@@ -175,7 +247,14 @@ void mouseReleased()
       finishTime = millis();
     }
   }
+  
 }
+
+void dragLogic()
+{
+  Destination d = destinations.get(trialIndex);
+}
+
 
 //probably shouldn't modify this, but email me if you want to for some good reason.
 public boolean checkForSuccess()
