@@ -97,7 +97,22 @@ void draw() {
   translate(logoX, logoY);
   rotate(radians(logoRotation));
   noStroke();
-  fill(60, 60, 192, 192);
+  Destination d = destinations.get(trialIndex);  
+  boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
+  boolean closeRotation = calculateDifferenceBetweenAngles(d.rotation, logoRotation)<=5;
+  boolean closeZ = abs(d.z - logoZ)<inchToPix(.05f); //has to be within +-0.05"  
+  if(closeRotation){
+    fill(0, 255, 0);
+    circle(0, 0, 50);
+  }
+  if(closeZ){
+    fill(255);
+  }else{
+    fill(60, 60, 192, 192);
+  }
+  if(closeDist){
+    stroke(50,168,82);
+  }
   rect(0, 0, logoZ, logoZ);
   popMatrix();
 
