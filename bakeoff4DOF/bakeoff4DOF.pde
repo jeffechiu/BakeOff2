@@ -101,6 +101,9 @@ void draw() {
   boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
   boolean closeRotation = calculateDifferenceBetweenAngles(d.rotation, logoRotation)<=5;
   boolean closeZ = abs(d.z - logoZ)<inchToPix(.05f); //has to be within +-0.05"  
+  
+  
+  
   if(closeRotation){
     fill(0, 255, 0);
     circle(0, 0, 50);
@@ -113,6 +116,11 @@ void draw() {
   if(closeDist){
     stroke(50,168,82);
   }
+  
+  if (closeRotation && closeZ && closeDist) {
+    fill(0, 255, 0);
+  }
+  
   rect(0, 0, logoZ, logoZ);
   popMatrix();
 
