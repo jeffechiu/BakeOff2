@@ -111,40 +111,41 @@ void draw() {
 void scaffoldControlLogic()
 {
   //upper left corner, rotate counterclockwise
-  text("CCW", inchToPix(.4f), inchToPix(.4f));
-  if (mousePressed && dist(0, 0, mouseX, mouseY)<inchToPix(.8f))
+  text("CCW", inchToPix(3.4f), inchToPix(.4f));
+  if (mousePressed && dist(inchToPix(3.4f), inchToPix(.4f), mouseX, mouseY)<inchToPix(.2f))
     logoRotation--;
 
   //upper right corner, rotate clockwise
-  text("CW", width-inchToPix(.4f), inchToPix(.4f));
-  if (mousePressed && dist(width, 0, mouseX, mouseY)<inchToPix(.8f))
+  
+  text("CW", inchToPix(4.2f), inchToPix(.4f));
+  if (mousePressed && dist(inchToPix(4.2f), inchToPix(.4f), mouseX, mouseY)<inchToPix(.2f))
     logoRotation++;
 
   //lower left corner, decrease Z
-  text("-", inchToPix(.4f), height-inchToPix(.4f));
-  if (mousePressed && dist(0, height, mouseX, mouseY)<inchToPix(.8f))
+  text("-", inchToPix(3.4f), inchToPix(.8f));
+  if (mousePressed && dist(inchToPix(3.4f), inchToPix(.8f), mouseX, mouseY)<inchToPix(.2f))
     logoZ = constrain(logoZ-inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone!
 
   //lower right corner, increase Z
-  text("+", width-inchToPix(.4f), height-inchToPix(.4f));
-  if (mousePressed && dist(width, height, mouseX, mouseY)<inchToPix(.8f))
+  text("+", inchToPix(4.2f), inchToPix(.8f));
+  if (mousePressed && dist(inchToPix(4.2f), inchToPix(.8f), mouseX, mouseY)<inchToPix(.2f))
     logoZ = constrain(logoZ+inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone! 
 
   //left middle, move left
-  text("left", inchToPix(.4f), height/2);
-  if (mousePressed && dist(0, height/2, mouseX, mouseY)<inchToPix(.8f))
+  text("L", inchToPix(.2f), inchToPix(.6f));
+  if (mousePressed && dist(inchToPix(.2f), inchToPix(.6f), mouseX, mouseY)<inchToPix(.2f))
     logoX-=inchToPix(.02f);
 
-  text("right", width-inchToPix(.4f), height/2);
-  if (mousePressed && dist(width, height/2, mouseX, mouseY)<inchToPix(.8f))
+  text("R", inchToPix(.8f), inchToPix(.6f));
+  if (mousePressed && dist(inchToPix(.8f), inchToPix(.6f), mouseX, mouseY)<inchToPix(.2f))
     logoX+=inchToPix(.02f);
 
-  text("up", width/2, inchToPix(.4f));
-  if (mousePressed && dist(width/2, 0, mouseX, mouseY)<inchToPix(.8f))
+  text("U", inchToPix(.5f), inchToPix(.4f));
+  if (mousePressed && dist(inchToPix(.4f), inchToPix(.4f), mouseX, mouseY)<inchToPix(.2f))
     logoY-=inchToPix(.02f);
 
-  text("down", width/2, height-inchToPix(.4f));
-  if (mousePressed && dist(width/2, height, mouseX, mouseY)<inchToPix(.8f))
+  text("D", inchToPix(.5f), inchToPix(.9f));
+  if (mousePressed && dist(inchToPix(.5f), inchToPix(.9f), mouseX, mouseY)<inchToPix(.2f))
     logoY+=inchToPix(.02f);
 }
 
