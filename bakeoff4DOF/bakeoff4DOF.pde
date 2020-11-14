@@ -11,6 +11,7 @@ float errorPenalty = 0.5f; //for every error, add this value to mean time
 int startTime = 0; // time starts when the first click is captured
 int finishTime = 0; //records the time of the final click
 boolean userDone = false; //is the user done
+float movementSpeed = .02f;
 
 final int screenPPI = 72; //what is the DPI of the screen you are using
 //you can test this by drawing a 72x72 pixel rectangle in code, and then confirming with a ruler it is 1x1 inch. 
@@ -110,6 +111,21 @@ void draw() {
 //my example design for control, which is terrible
 void scaffoldControlLogic()
 {
+  text("Movement Speed", inchToPix(3f),inchToPix(.4f));
+  text("-", inchToPix(2.5f), inchToPix(.8f));
+  text("+", inchToPix(3.5f), inchToPix(.8f));
+  if (mousePressed && dist(inchToPix(3.5f), inchToPix(.8f), mouseX, mouseY)<inchToPix(.5f)) {
+    movementSpeed += .005f;
+    print(movementSpeed);
+  }
+  if (mousePressed && dist(inchToPix(2.5f), inchToPix(.8f), mouseX, mouseY)<inchToPix(.5f)) {
+    if (movementSpeed > .02f) {
+      movementSpeed -= .005f;
+    }
+    print(movementSpeed);
+  }
+  
+  
   //upper left corner, rotate counterclockwise
   text("CCW", inchToPix(.4f), inchToPix(.4f));
   if (mousePressed && dist(0, 0, mouseX, mouseY)<inchToPix(.8f))
@@ -133,19 +149,19 @@ void scaffoldControlLogic()
   //left middle, move left
   text("left", inchToPix(.4f), height/2);
   if (mousePressed && dist(0, height/2, mouseX, mouseY)<inchToPix(.8f))
-    logoX-=inchToPix(.02f);
+    logoX-=inchToPix(movementSpeed);
 
   text("right", width-inchToPix(.4f), height/2);
   if (mousePressed && dist(width, height/2, mouseX, mouseY)<inchToPix(.8f))
-    logoX+=inchToPix(.02f);
+    logoX+=inchToPix(movementSpeed);
 
   text("up", width/2, inchToPix(.4f));
   if (mousePressed && dist(width/2, 0, mouseX, mouseY)<inchToPix(.8f))
-    logoY-=inchToPix(.02f);
+    logoY-=inchToPix(movementSpeed);
 
   text("down", width/2, height-inchToPix(.4f));
   if (mousePressed && dist(width/2, height, mouseX, mouseY)<inchToPix(.8f))
-    logoY+=inchToPix(.02f);
+    logoY+=inchToPix(movementSpeed);
 }
 
 
