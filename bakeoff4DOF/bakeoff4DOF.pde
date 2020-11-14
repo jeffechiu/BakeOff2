@@ -114,9 +114,11 @@ void draw() {
   if(closeDist){
     stroke(50,168,82);
   }
+
   if (closeRotation && closeZ && closeDist) {
     fill(0, 255, 0);
   }
+
   rect(0, 0, logoZ, logoZ);
   popMatrix();
 
