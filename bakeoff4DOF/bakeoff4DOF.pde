@@ -73,6 +73,7 @@ void draw() {
     text("User took " + ((finishTime-startTime)/1000f/trialCount+(errorCount*errorPenalty)) + " sec per destination inc. penalty", width/2, inchToPix(.4f)*4);
     return;
   }
+  confirmSquare();
 
   //===========DRAW DESTINATION SQUARES=================
   for (int i=trialIndex; i<trialCount; i++) // reduces over time
@@ -98,7 +99,22 @@ void draw() {
   translate(logoX, logoY);
   rotate(radians(logoRotation));
   noStroke();
-  fill(60, 60, 192, 192);
+  Destination d = destinations.get(trialIndex);  
+  boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
+  boolean closeRotation = calculateDifferenceBetweenAngles(d.rotation, logoRotation)<=5;
+  boolean closeZ = abs(d.z - logoZ)<inchToPix(.05f); //has to be within +-0.05"  
+  if(closeRotation){
+    fill(0, 255, 0);
+    circle(0, 0, 50);
+  }
+  if(closeZ){
+    fill(255);
+  }else{
+    fill(60, 60, 192, 192);
+  }
+  if(closeDist){
+    stroke(50,168,82);
+  }
   rect(0, 0, logoZ, logoZ);
   popMatrix();
 
@@ -106,6 +122,15 @@ void draw() {
   fill(255);
   scaffoldControlLogic(); //you are going to want to replace this!
   text("Trial " + (trialIndex+1) + " of " +trialCount, width/2, inchToPix(.8f));
+}
+
+void confirmSquare()
+{
+  fill(0, 255, 0);
+  circle(inchToPix(1.5f), inchToPix(.5f), inchToPix(1f));
+  fill(0, 0, 0);
+  textSize(20);
+  text("Confirm", inchToPix(1.5f), inchToPix(.6f));
 }
 
 //my example design for control, which is terrible
@@ -234,7 +259,7 @@ void mouseDragged()
 void mouseReleased()
 {
   //check to see if user clicked middle of screen within 3 inches, which this code uses as a submit button
-  if (dist(width/2, height/2, mouseX, mouseY)<inchToPix(3f))
+  if (mouseX > inchToPix(1f) && mouseX < inchToPix(2f) && mouseY > inchToPix(0) && mouseY < inchToPix(1f))//(dist(width/2, height/2, mouseX, mouseY)<inchToPix(3f))
   {
     if (userDone==false && !checkForSuccess())
       errorCount++;
