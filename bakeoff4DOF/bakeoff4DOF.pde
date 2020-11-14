@@ -73,7 +73,6 @@ void draw() {
     text("User took " + ((finishTime-startTime)/1000f/trialCount+(errorCount*errorPenalty)) + " sec per destination inc. penalty", width/2, inchToPix(.4f)*4);
     return;
   }
-  confirmSquare();
 
   //===========DRAW DESTINATION SQUARES=================
   for (int i=trialIndex; i<trialCount; i++) // reduces over time
@@ -125,15 +124,6 @@ void draw() {
   fill(255);
   scaffoldControlLogic(); //you are going to want to replace this!
   text("Trial " + (trialIndex+1) + " of " +trialCount, width/2, inchToPix(.8f));
-}
-
-void confirmSquare()
-{
-  fill(0, 255, 0);
-  circle(inchToPix(1.5f), inchToPix(.5f), inchToPix(1f));
-  fill(0, 0, 0);
-  textSize(20);
-  text("Confirm", inchToPix(1.5f), inchToPix(.6f));
 }
 
 //my example design for control, which is terrible
@@ -208,7 +198,7 @@ void mousePressed()
   
   
 }
-
+/*
 
 void mouseDragged()
 {
@@ -229,10 +219,10 @@ void mouseDragged()
   
   //dragging movement
   
-  if (mouseX > width/2+logoX-(logoZ/2) && mouseX < width/2+logoX+(logoZ/2) && mouseY > height/2+logoY-(logoZ/2) && mouseY < height/2+logoY+(logoZ/2)) {
+  //if (mouseX > width/2+logoX-(logoZ/2) && mouseX < width/2+logoX+(logoZ/2) && mouseY > height/2+logoY-(logoZ/2) && mouseY < height/2+logoY+(logoZ/2)) {
 
-    logoX = mouseX-width/2;
-    logoY = mouseY-height/2;
+    //logoX = mouseX-width/2;
+    //logoY = mouseY-height/2;
     /*
     if (circlesIn == false) {
           print("happened");
@@ -252,17 +242,14 @@ void mouseDragged()
         circlesIn = false;
         }
         */
-  }
 
-  
-  
-}
+
 
 
 void mouseReleased()
 {
   //check to see if user clicked middle of screen within 3 inches, which this code uses as a submit button
-  if (mouseX > inchToPix(1f) && mouseX < inchToPix(2f) && mouseY > inchToPix(0) && mouseY < inchToPix(1f))//(dist(width/2, height/2, mouseX, mouseY)<inchToPix(3f))
+  if (dist(width/2, height/2, mouseX, mouseY)<inchToPix(3f))
   {
     if (userDone==false && !checkForSuccess())
       errorCount++;
