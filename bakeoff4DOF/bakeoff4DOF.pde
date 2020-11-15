@@ -22,6 +22,8 @@ float logoY = 0;
 float logoZ = 50f;
 float logoRotation = 0;
 
+boolean expand = false;
+
 private class Destination
 {
   float x = 0;
@@ -177,8 +179,6 @@ void mousePressed()
     println("time started!");
     
   }
-  
-  
 }
 
 
@@ -199,7 +199,19 @@ void mouseDragged()
   }
   */
   
-  //dragging movement
+  //expanding of box
+  
+ 
+  
+  text("Box x: " + logoX + logoZ, 100, 200);
+  text("Box y: " + logoY, 100, 250);
+  
+  if(mouseX > logoX + logoZ && mouseY > logoY + logoZ){
+     text("Mouse x: " + mouseX, 100, 100);
+    text("Mouse y: " + mouseY, 100, 150);
+  }
+  
+  //dragging movement of box
   
   if (mouseX > width/2+logoX-(logoZ/2) && mouseX < width/2+logoX+(logoZ/2) && mouseY > height/2+logoY-(logoZ/2) && mouseY < height/2+logoY+(logoZ/2)) {
 
@@ -224,10 +236,7 @@ void mouseDragged()
         circlesIn = false;
         }
         */
-  }
-
-  
-  
+  }  
 }
 
 
