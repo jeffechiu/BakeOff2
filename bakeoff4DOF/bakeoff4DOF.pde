@@ -23,6 +23,8 @@ float logoZ = 50f;
 float logoRotation = 0;
 
 boolean expand = false;
+int oldX;
+int oldY;
 
 private class Destination
 {
@@ -179,6 +181,8 @@ void mousePressed()
     println("time started!");
     
   }
+  oldX = mouseX;
+  oldY = mouseY;
 }
 
 
@@ -201,14 +205,12 @@ void mouseDragged()
   
   //expanding of box
   
- 
-  
-  text("Box x: " + logoX + logoZ, 100, 200);
-  text("Box y: " + logoY, 100, 250);
-  
-  if(mouseX > logoX + logoZ && mouseY > logoY + logoZ){
-     text("Mouse x: " + mouseX, 100, 100);
-    text("Mouse y: " + mouseY, 100, 150);
+  if(mouseX > logoX + logoZ && mouseY > logoY + logoZ && mouseX > oldX && mouseY > oldY && logoZ < 500){
+    if(mouseX > oldX && mouseY > oldY){
+      logoZ = logoZ + (mouseX - oldX + mouseY - oldY) / 50;
+    }else{
+      logoZ = logoZ - (oldX - mouseX + oldY - mouseY) / 50;
+    }
   }
   
   //dragging movement of box
