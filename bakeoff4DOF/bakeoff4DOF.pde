@@ -104,7 +104,7 @@ void draw() {
   boolean closeZ = abs(d.z - logoZ)<inchToPix(.05f); //has to be within +-0.05"  
   if(closeRotation){
     fill(0, 255, 0);
-    circle(0, 0, 50);
+    circle(0, 0, 15);
   }
   if(closeZ){
     fill(255);
@@ -112,9 +112,8 @@ void draw() {
     fill(60, 60, 192, 192);
   }
   if(closeDist){
-    stroke(50,168,82);
+    stroke(50, 168, 82);
   }
-
   if (closeRotation && closeZ && closeDist) {
     fill(0, 255, 0);
   }
