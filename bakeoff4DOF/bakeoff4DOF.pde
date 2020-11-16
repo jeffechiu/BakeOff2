@@ -50,7 +50,7 @@ void setup() {
     Destination d = new Destination();
     d.x = random(-width/2+border, width/2-border); //set a random x with some padding
     d.y = random(-height/2+border, height/2-border); //set a random y with some padding
-    d.rotation = random(-90, 90); //random rotation between 0 and 360
+    d.rotation = random(0, 360); //random rotation between 0 and 360
     int j = (int)random(20);
     d.z = ((j%12)+1)*inchToPix(.25f); //increasing size from .25 up to 3.0" 
     destinations.add(d);
@@ -102,10 +102,10 @@ void draw() {
   pushMatrix();
   translate(width/2, height/2); //center the drawing coordinates to the center of the screen
   translate(logoX, logoY);
-  rotate(degrees(angle/36));
+  rotate(radians(logoRotation));
   noStroke();
   
-  logoRotation = degrees(angle/36);
+
   
   Destination d = destinations.get(trialIndex);  
   boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
@@ -132,7 +132,7 @@ void draw() {
   
   //Show Angle of Square
   fill(255);
-  text(int(logoRotation) + "°", 0, 0);
+  text(int(logoRotation%360) + "°", 0, 0);
   
   popMatrix();
 
@@ -154,22 +154,6 @@ void confirmSquare()
 //my example design for control, which is terrible
 void scaffoldControlLogic()
 {
-  //upper left corner, rotate counterclockwise
-  text("CCW", inchToPix(.4f), inchToPix(.4f));
-  if (mousePressed && dist(0, 0, mouseX, mouseY)<inchToPix(.8f))
-    logoRotation--;
-    if (logoRotation < -90)
-      logoRotation = 89;
-    
-
-  //upper right corner, rotate clockwise
-  text("CW", width-inchToPix(.4f), inchToPix(.4f));
-  if (mousePressed && dist(width, 0, mouseX, mouseY)<inchToPix(.8f))
-    logoRotation++;
-    if(logoRotation > 90)
-      logoRotation = -89;
-
-
   //lower left corner, decrease Z
   textSize(50);
   text("-", inchToPix(.6f), inchToPix(.7f));
@@ -219,11 +203,10 @@ void expandCirclesOut()
 
 float c_angle = 0;
 float q_angle = 0;
-float angle = 0;
 
 void mousePressed() {
   c_angle = atan2(mouseY - (logoY+height/2), mouseX - (logoX+width/2)); //The initial mouse rotation
-  q_angle = angle; //Initial box rotation
+  q_angle = 0; //Initial box rotation
 
   if (startTime == 0) //start time on the instant of the first user click
   {
@@ -295,9 +278,9 @@ void mouseDragged() {
     if (dangle<0) {
       dangle+=360;
     } //clamping
-    angle =  q_angle + dangle; //Apply the rotation
-    if (angle>=360) {
-      angle -= 360;
+    logoRotation =  (q_angle + dangle) * 100; //Apply the rotation
+    if (logoRotation>=360) {
+      logoRotation -= 360;
     } //clamping
   }
 }
