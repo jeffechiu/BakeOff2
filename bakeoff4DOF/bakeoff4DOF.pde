@@ -73,7 +73,6 @@ void draw() {
     text("User took " + ((finishTime-startTime)/1000f/trialCount+(errorCount*errorPenalty)) + " sec per destination inc. penalty", width/2, inchToPix(.4f)*4);
     return;
   }
-  confirmSquare();
   confirmSquare1();
 
   //===========DRAW DESTINATION SQUARES=================
@@ -128,7 +127,7 @@ void draw() {
 
   //===========DRAW EXAMPLE CONTROLS=================
   fill(255);
-  scaffoldControlLogic(); //you are going to want to replace this!
+  //scaffoldControlLogic(); //you are going to want to replace this!
   text("Trial " + (trialIndex+1) + " of " +trialCount, width/2, inchToPix(.8f));
 }
 
@@ -227,20 +226,6 @@ void mousePressed()
 void mouseDragged()
 {
   
-  /*
-  if (mouseX > width/2+logoX-logoZ/2-inchToPix(.075f) && mouseX < width/2+logoX-logoZ/2+inchToPix(.075f) && mouseY > height/2+logoY-logoZ/2-inchToPix(.075f) &&  mouseY < height/2+logoY-logoZ/2+inchToPix(.075f)) {
-    print("it happened");
-    float distance = dist(mouseX, mouseY, width/2+logoX-logoZ/2, height/2+logoX-logoZ/2);
-    logoZ = constrain(logoZ+distance, .01, inchToPix(4f)); //leave min and max alone!
-    float newX = (mouseX+(width/2+logoX-logoZ/2))/2 - width/2 + logoZ/2;
-    float newY = (mouseY+(height/2+logoY-logoZ/2))/2 - height/2 + logoZ/2;
-    logoX = newX;
-    logoY = newY;
-    print(logoZ);
-    
-  
-  */
-  
   //dragging movement
   
   if (dist(mouseX, mouseY, width/2+logoX, height/2+logoY)  < logoZ/2) {
@@ -284,7 +269,6 @@ void mouseDragged()
 
 void mouseReleased()
 {
-  //check to see if user clicked middle of screen within 3 inches, which this code uses as a submit button
   if (mouseX > width/2+logoX+logoZ+25-inchToPix(0.5f) && mouseX < width/2+logoX+logoZ+25+inchToPix(0.5f) && mouseY > height/2+logoY-inchToPix(0.5f) && mouseY < height/2+logoY+inchToPix(0.5f)) {
     if (userDone==false && !checkForSuccess())
       errorCount++;
@@ -297,7 +281,7 @@ void mouseReleased()
       finishTime = millis();
     }
   }
-  
+ /*
   if (mouseX > inchToPix(1f) && mouseX < inchToPix(2f) && mouseY > inchToPix(0) && mouseY < inchToPix(1f))//(dist(width/2, height/2, mouseX, mouseY)<inchToPix(3f))
   {
     if (userDone==false && !checkForSuccess())
@@ -311,6 +295,7 @@ void mouseReleased()
       finishTime = millis();
     }
   }
+  */
   
 }
 
