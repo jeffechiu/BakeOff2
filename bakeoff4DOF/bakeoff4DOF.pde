@@ -50,7 +50,7 @@ void setup() {
     Destination d = new Destination();
     d.x = random(-width/2+border, width/2-border); //set a random x with some padding
     d.y = random(-height/2+border, height/2-border); //set a random y with some padding
-    d.rotation = random(0, 360); //random rotation between 0 and 360
+    d.rotation = random(-90, 90); //random rotation between 0 and 360
     int j = (int)random(20);
     d.z = ((j%12)+1)*inchToPix(.25f); //increasing size from .25 up to 3.0" 
     destinations.add(d);
@@ -88,10 +88,12 @@ void draw() {
     rotate(radians(d.rotation));
     noFill();
     strokeWeight(3f);
-    if (trialIndex==i)
+    if (trialIndex==i){
       stroke(255, 0, 0, 192); //set color to semi translucent
-    else
+        text(int(d.rotation) + "°", 0, 0);
+    }else{
       stroke(128, 128, 128, 128); //set color to semi translucent
+    }
     rect(0, 0, d.z, d.z);
     popMatrix();
   }
@@ -127,6 +129,11 @@ void draw() {
   }
   
   rect(0, 0, logoZ, logoZ);
+  
+  //Show Angle of Square
+  fill(255);
+  text(int(logoRotation) + "°", 0, 0);
+  
   popMatrix();
 
   //===========DRAW EXAMPLE CONTROLS=================
@@ -148,14 +155,20 @@ void confirmSquare()
 void scaffoldControlLogic()
 {
   //upper left corner, rotate counterclockwise
-  //text("CCW", inchToPix(.4f), inchToPix(.4f));
-  //if (mousePressed && dist(0, 0, mouseX, mouseY)<inchToPix(.8f))
-  //  logoRotation--;
+  text("CCW", inchToPix(.4f), inchToPix(.4f));
+  if (mousePressed && dist(0, 0, mouseX, mouseY)<inchToPix(.8f))
+    logoRotation--;
+    if (logoRotation < -90)
+      logoRotation = 89;
+    
 
-  ////upper right corner, rotate clockwise
-  //text("CW", width-inchToPix(.4f), inchToPix(.4f));
-  //if (mousePressed && dist(width, 0, mouseX, mouseY)<inchToPix(.8f))
-  //  logoRotation++;
+  //upper right corner, rotate clockwise
+  text("CW", width-inchToPix(.4f), inchToPix(.4f));
+  if (mousePressed && dist(width, 0, mouseX, mouseY)<inchToPix(.8f))
+    logoRotation++;
+    if(logoRotation > 90)
+      logoRotation = -89;
+
 
   //lower left corner, decrease Z
   textSize(50);
