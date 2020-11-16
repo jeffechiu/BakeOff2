@@ -118,6 +118,10 @@ void draw() {
   if (closeRotation && closeZ && closeDist) {
     fill(0, 255, 0);
   }
+  circle(-logoZ/2, -logoZ/2, 10);
+  circle(-logoZ/2, +logoZ/2, 10);
+  circle(logoZ/2, -logoZ/2, 10);
+  circle(logoZ/2, logoZ/2, 10);
   rect(0, 0, logoZ, logoZ);
   popMatrix();
 
