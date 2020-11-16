@@ -224,12 +224,12 @@ void mouseDragged()
     logoY = newY;
     print(logoZ);
     
-  }
+  
   */
   
   //dragging movement
   
-  if (mouseX > width/2+logoX-(logoZ/2) && mouseX < width/2+logoX+(logoZ/2) && mouseY > height/2+logoY-(logoZ/2) && mouseY < height/2+logoY+(logoZ/2)) {
+  if (dist(mouseX, mouseY, width/2+logoX, height/2+logoY)  < logoZ/2) {
 
     logoX = mouseX-width/2;
     logoY = mouseY-height/2;
@@ -252,11 +252,20 @@ void mouseDragged()
         circlesIn = false;
         }
         */
-  }
+  } else if ((dist(mouseX, mouseY, width/2+logoX, height/2+logoY) < (logoZ+5)) || (dist(mouseX, mouseY, width/2+logoX, height/2+logoY) < (logoZ-5))){
+    float deg = (degrees((atan2(mouseY-(height/2 + logoY), mouseX-(width/2 + logoX)) - radians(logoRotation)))) % 90;
+      if (abs(45-abs(deg)) < 7) {
+        // Rotate the square if dragged anywhere away from its diagonal lines
+        float angleToCenter = atan2(mouseY-(height/2 + logoY), mouseX-(width/2 + logoX)) - 3.14/4.0;
+        logoRotation = degrees(angleToCenter);
+        
+        // If dragged anywhere along the circle of the mouse and the angle matches the corner, change the size
+        logoZ = dist(mouseX, mouseY, width/2+logoX, height/2+logoY)*1.414;
+        logoZ = constrain(dist(mouseX, mouseY, width/2+logoX, height/2+logoY)*1.414, .01, inchToPix(4f));
+      }
+    }
+  }  
 
-  
-  
-}
 
 
 void mouseReleased()
