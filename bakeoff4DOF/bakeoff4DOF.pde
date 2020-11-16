@@ -107,10 +107,6 @@ void draw() {
   boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
   boolean closeRotation = calculateDifferenceBetweenAngles(d.rotation, logoRotation)<=5;
   boolean closeZ = abs(d.z - logoZ)<inchToPix(.05f); //has to be within +-0.05"  
-  if(closeRotation){
-    fill(0, 255, 0);
-    circle(0, 0, 15);
-  }
   if(closeZ){
     fill(255);
   }else{
@@ -121,6 +117,11 @@ void draw() {
   }
   if (closeRotation && closeZ && closeDist) {
     fill(0, 255, 0);
+  }
+  
+  if(closeRotation){
+    fill(0, 255, 0);
+    circle(0, 0, 15);
   }
   
   rect(0, 0, logoZ, logoZ);
@@ -155,13 +156,14 @@ void scaffoldControlLogic()
   //  logoRotation++;
 
   //lower left corner, decrease Z
-  text("-", inchToPix(6.6f), height-inchToPix(.4f));
-  if (mousePressed && dist(inchToPix(6.6f), height, mouseX, mouseY)<inchToPix(.8f))
+  textSize(50);
+  text("-", inchToPix(.6f), inchToPix(.7f));
+  if (mousePressed && dist(inchToPix(.6f), inchToPix(.7f), mouseX, mouseY)<inchToPix(.4f))
     logoZ = constrain(logoZ-inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone!
 
   //lower right corner, increase Z
-  text("+", width-inchToPix(6.6f), height-inchToPix(.4f));
-  if (mousePressed && dist(width-inchToPix(6.6f), height, mouseX, mouseY)<inchToPix(.8f))
+  text("+", inchToPix(2.4f), inchToPix(.75f));
+  if (mousePressed && dist(inchToPix(2.4f), inchToPix(.75f), mouseX, mouseY)<inchToPix(.4f))
     logoZ = constrain(logoZ+inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone! 
 
   ////left middle, move left
