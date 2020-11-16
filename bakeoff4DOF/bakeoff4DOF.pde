@@ -103,6 +103,8 @@ void draw() {
   rotate(degrees(angle/36));
   noStroke();
   
+  logoRotation = degrees(angle/36);
+  
   Destination d = destinations.get(trialIndex);  
   boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
   boolean closeRotation = calculateDifferenceBetweenAngles(d.rotation, logoRotation)<=5;
