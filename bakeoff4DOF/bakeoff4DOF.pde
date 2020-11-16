@@ -128,12 +128,12 @@ void scaffoldControlLogic()
   //lower left corner, decrease Z
   text("-", inchToPix(.4f), height-inchToPix(.4f));
   if (mousePressed && dist(0, height, mouseX, mouseY)<inchToPix(.8f))
-    logoZ = constrain(logoZ-inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone!
+    logoZ = constrain(logoZ-inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone!
 
   //lower right corner, increase Z
   text("+", width-inchToPix(.4f), height-inchToPix(.4f));
   if (mousePressed && dist(width, height, mouseX, mouseY)<inchToPix(.8f))
-    logoZ = constrain(logoZ+inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone! 
+    logoZ = constrain(logoZ+inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone! 
 
   ////left middle, move left
   //text("left", inchToPix(.4f), height/2);
@@ -243,16 +243,16 @@ void mouseDragged() {
     float m_angle = atan2(mouseY - (logoY+height/2), mouseX - (logoX+width/2));
 
     float dangle = m_angle - c_angle; //How much the box needs to be rotated
-    //if (dangle>=360) {
-    //  dangle-=360;
-    //} //clamping
-    //if (dangle<0) {
-    //  dangle+=360;
-    //} //clamping
+    if (dangle>=360) {
+      dangle-=360;
+    } //clamping
+    if (dangle<0) {
+      dangle+=360;
+    } //clamping
     angle =  q_angle + dangle; //Apply the rotation
-    //if (angle>=360) {
-    //  angle -= 360;
-    //} //clamping
+    if (angle>=360) {
+      angle -= 360;
+    } //clamping
   }
 }
 
