@@ -74,6 +74,7 @@ void draw() {
     return;
   }
   confirmSquare();
+  confirmSquare1();
 
   //===========DRAW DESTINATION SQUARES=================
   for (int i=trialIndex; i<trialCount; i++) // reduces over time
@@ -138,6 +139,15 @@ void confirmSquare()
   fill(0, 0, 0);
   textSize(20);
   text("Confirm", inchToPix(1.5f), inchToPix(.6f));
+}
+
+void confirmSquare1()
+{
+  fill(0, 255, 0);
+  circle(width/2+logoX+logoZ+25, height/2+logoY, inchToPix(1f));
+  fill(0, 0, 0);
+  textSize(20);
+  text("Confirm", width/2+logoX+logoZ+25, height/2+logoY+inchToPix(.1f));
 }
 
 //my example design for control, which is terrible
@@ -275,6 +285,19 @@ void mouseDragged()
 void mouseReleased()
 {
   //check to see if user clicked middle of screen within 3 inches, which this code uses as a submit button
+  if (mouseX > width/2+logoX+logoZ+25-inchToPix(0.5f) && mouseX < width/2+logoX+logoZ+25+inchToPix(0.5f) && mouseY > height/2+logoY-inchToPix(0.5f) && mouseY < height/2+logoY+inchToPix(0.5f)) {
+    if (userDone==false && !checkForSuccess())
+      errorCount++;
+
+    trialIndex++; //and move on to next trial
+
+    if (trialIndex==trialCount && userDone==false)
+    {
+      userDone = true;
+      finishTime = millis();
+    }
+  }
+  
   if (mouseX > inchToPix(1f) && mouseX < inchToPix(2f) && mouseY > inchToPix(0) && mouseY < inchToPix(1f))//(dist(width/2, height/2, mouseX, mouseY)<inchToPix(3f))
   {
     if (userDone==false && !checkForSuccess())
