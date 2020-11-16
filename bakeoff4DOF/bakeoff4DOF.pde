@@ -177,7 +177,7 @@ float angle = 0;
 
 void mousePressed()
 {
-  c_angle = atan2(mouseY - 150, mouseX - 150); //The initial mouse rotation
+  c_angle = atan2(mouseY - logoY, mouseX - logoX); //The initial mouse rotation
   q_angle = angle; //Initial box rotation
   
   if (startTime == 0) //start time on the instant of the first user click
@@ -193,7 +193,7 @@ void mousePressed()
 
 void mouseDragged()
 {
-  float m_angle = atan2(mouseY - 150, mouseX - 150);
+  float m_angle = atan2(mouseY - logoY, mouseX - logoX);
 
   float dangle = m_angle - c_angle; //How much the box needs to be rotated
   if (dangle>=360) dangle-=360; //clamping
@@ -216,14 +216,14 @@ void mouseDragged()
   */
   
   //expanding of box
-  
+  /*
   if(mouseX > logoX + logoZ && mouseY > logoY + logoZ && mouseX > oldX && mouseY > oldY && logoZ < 500){
     if(mouseX > oldX && mouseY > oldY){
       logoZ = logoZ + (mouseX - oldX + mouseY - oldY) / 50;
     }else{
       logoZ = logoZ - (oldX - mouseX + oldY - mouseY) / 50;
     }
-  }
+  }*/
   
   //dragging movement of box
   
