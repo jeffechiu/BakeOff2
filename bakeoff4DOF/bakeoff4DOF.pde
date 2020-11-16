@@ -100,7 +100,7 @@ void draw() {
   pushMatrix();
   translate(width/2, height/2); //center the drawing coordinates to the center of the screen
   translate(logoX, logoY);
-  rotate(radians(logoRotation));
+  rotate(angle);
   noStroke();
   fill(60, 60, 192, 192);
   rect(0, 0, logoZ, logoZ);
@@ -171,10 +171,15 @@ void expandCirclesOut()
   circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
 }
 
-
+float c_angle = 0;
+float q_angle = 0;
+float angle = 0;
 
 void mousePressed()
 {
+  c_angle = atan2(mouseY - 150, mouseX - 150); //The initial mouse rotation
+  q_angle = angle; //Initial box rotation
+  
   if (startTime == 0) //start time on the instant of the first user click
   {
     startTime = millis();
@@ -188,6 +193,13 @@ void mousePressed()
 
 void mouseDragged()
 {
+  float m_angle = atan2(mouseY - 150, mouseX - 150);
+
+  float dangle = m_angle - c_angle; //How much the box needs to be rotated
+  if (dangle>=360) dangle-=360; //clamping
+  if (dangle<0) dangle+=360; //clamping
+  angle =  q_angle + dangle; //Apply the rotation
+  if (angle>=360) angle -= 360; //clamping
   
   /*
   if (mouseX > width/2+logoX-logoZ/2-inchToPix(.075f) && mouseX < width/2+logoX-logoZ/2+inchToPix(.075f) && mouseY > height/2+logoY-logoZ/2-inchToPix(.075f) &&  mouseY < height/2+logoY-logoZ/2+inchToPix(.075f)) {
