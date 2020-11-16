@@ -142,7 +142,11 @@ void confirmSquare()
 
 void confirmSquare1()
 {
-  fill(0, 255, 0);
+  if(checkForSuccess()){
+    fill(0, 255, 0);
+  }else{
+    fill(255);
+  }
   circle(width/2+logoX+logoZ+25, height/2+logoY, inchToPix(1f));
   fill(0, 0, 0);
   textSize(20);
