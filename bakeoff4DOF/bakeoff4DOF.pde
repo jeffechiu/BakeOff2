@@ -102,7 +102,27 @@ void draw() {
   translate(logoX, logoY);
   rotate(degrees(angle/36));
   noStroke();
-  fill(60, 60, 192, 192);
+  
+  Destination d = destinations.get(trialIndex);  
+  boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
+  boolean closeRotation = calculateDifferenceBetweenAngles(d.rotation, logoRotation)<=5;
+  boolean closeZ = abs(d.z - logoZ)<inchToPix(.05f); //has to be within +-0.05"  
+  if(closeRotation){
+    fill(0, 255, 0);
+    circle(0, 0, 15);
+  }
+  if(closeZ){
+    fill(255);
+  }else{
+    fill(60, 60, 192, 192);
+  }
+  if(closeDist){
+    stroke(50, 168, 82);
+  }
+  if (closeRotation && closeZ && closeDist) {
+    fill(0, 255, 0);
+  }
+  
   rect(0, 0, logoZ, logoZ);
   popMatrix();
 
@@ -126,13 +146,13 @@ void scaffoldControlLogic()
   //  logoRotation++;
 
   //lower left corner, decrease Z
-  text("-", inchToPix(.4f), height-inchToPix(.4f));
-  if (mousePressed && dist(0, height, mouseX, mouseY)<inchToPix(.8f))
+  text("-", inchToPix(6.6f), height-inchToPix(.4f));
+  if (mousePressed && dist(inchToPix(6.6f), height, mouseX, mouseY)<inchToPix(.8f))
     logoZ = constrain(logoZ-inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone!
 
   //lower right corner, increase Z
-  text("+", width-inchToPix(.4f), height-inchToPix(.4f));
-  if (mousePressed && dist(width, height, mouseX, mouseY)<inchToPix(.8f))
+  text("+", width-inchToPix(6.6f), height-inchToPix(.4f));
+  if (mousePressed && dist(width-inchToPix(6.6f), height, mouseX, mouseY)<inchToPix(.8f))
     logoZ = constrain(logoZ+inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone! 
 
   ////left middle, move left
