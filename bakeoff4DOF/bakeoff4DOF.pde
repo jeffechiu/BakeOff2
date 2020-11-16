@@ -145,12 +145,12 @@ void scaffoldControlLogic()
   //  logoRotation++;
 
   //lower left corner, decrease Z
-  text("-", inchToPix(.4f), height-inchToPix(.4f));
+  text("-", inchToPix(6.5f), height-inchToPix(.4f));
   if (mousePressed && dist(0, height, mouseX, mouseY)<inchToPix(.8f))
     logoZ = constrain(logoZ-inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone!
 
   //lower right corner, increase Z
-  text("+", width-inchToPix(.4f), height-inchToPix(.4f));
+  text("+", width-inchToPix(6.5f), height-inchToPix(.4f));
   if (mousePressed && dist(width, height, mouseX, mouseY)<inchToPix(.8f))
     logoZ = constrain(logoZ+inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone! 
 
