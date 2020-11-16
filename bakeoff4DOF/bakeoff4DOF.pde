@@ -11,6 +11,7 @@ float errorPenalty = 0.5f; //for every error, add this value to mean time
 int startTime = 0; // time starts when the first click is captured
 int finishTime = 0; //records the time of the final click
 boolean userDone = false; //is the user done
+boolean circlesIn = false;
 
 final int screenPPI = 72; //what is the DPI of the screen you are using
 //you can test this by drawing a 72x72 pixel rectangle in code, and then confirming with a ruler it is 1x1 inch. 
@@ -20,6 +21,10 @@ float logoX = 0;
 float logoY = 0;
 float logoZ = 50f;
 float logoRotation = 0;
+
+boolean expand = false;
+int oldX;
+int oldY;
 
 private class Destination
 {
@@ -95,7 +100,7 @@ void draw() {
   pushMatrix();
   translate(width/2, height/2); //center the drawing coordinates to the center of the screen
   translate(logoX, logoY);
-  rotate(radians(logoRotation));
+  rotate(degrees(angle/36));
   noStroke();
   fill(60, 60, 192, 192);
   rect(0, 0, logoZ, logoZ);
@@ -149,13 +154,106 @@ void scaffoldControlLogic()
     logoY+=inchToPix(.02f);
 }
 
-
-void mousePressed()
+void expandCirclesIn()
 {
+  fill(255, 255, 255);
+  circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+}
+
+void expandCirclesOut()
+{
+  fill(255, 255, 255, 0);
+  circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+  circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+}
+
+float c_angle = 0;
+float q_angle = 0;
+float angle = 0;
+
+void mousePressed() {
+  c_angle = atan2(mouseY - (logoY+height/2), mouseX - (logoX+width/2)); //The initial mouse rotation
+  q_angle = angle; //Initial box rotation
+
   if (startTime == 0) //start time on the instant of the first user click
   {
     startTime = millis();
     println("time started!");
+  }
+  oldX = mouseX;
+  oldY = mouseY;
+}
+
+
+void mouseDragged() {
+  /*
+  if (mouseX > width/2+logoX-logoZ/2-inchToPix(.075f) && mouseX < width/2+logoX-logoZ/2+inchToPix(.075f) && mouseY > height/2+logoY-logoZ/2-inchToPix(.075f) &&  mouseY < height/2+logoY-logoZ/2+inchToPix(.075f)) {
+   print("it happened");
+   float distance = dist(mouseX, mouseY, width/2+logoX-logoZ/2, height/2+logoX-logoZ/2);
+   logoZ = constrain(logoZ+distance, .01, inchToPix(4f)); //leave min and max alone!
+   float newX = (mouseX+(width/2+logoX-logoZ/2))/2 - width/2 + logoZ/2;
+   float newY = (mouseY+(height/2+logoY-logoZ/2))/2 - height/2 + logoZ/2;
+   logoX = newX;
+   logoY = newY;
+   print(logoZ);
+   
+   }
+   */
+
+  //expanding of box
+  /*
+  if(mouseX > logoX + logoZ && mouseY > logoY + logoZ && mouseX > oldX && mouseY > oldY && logoZ < 500){
+   if(mouseX > oldX && mouseY > oldY){
+   logoZ = logoZ + (mouseX - oldX + mouseY - oldY) / 50;
+   }else{
+   logoZ = logoZ - (oldX - mouseX + oldY - mouseY) / 50;
+   }
+   }*/
+
+  //dragging movement of box
+
+  if (mouseX > width/2+logoX-(logoZ/2) && mouseX < width/2+logoX+(logoZ/2) && mouseY > height/2+logoY-(logoZ/2) && mouseY < height/2+logoY+(logoZ/2)) {
+
+    logoX = mouseX-width/2;
+    logoY = mouseY-height/2;
+    /*
+    if (circlesIn == false) {
+     print("happened");
+     fill(255, 255, 255);
+     circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+     circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+     circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+     circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+     circlesIn = true;
+     }
+     else {
+     fill(255, 255, 255, 0);
+     circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+     circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+     circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
+     circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
+     circlesIn = false;
+     }
+     */
+  } else {
+    float m_angle = atan2(mouseY - (logoY+height/2), mouseX - (logoX+width/2));
+
+    float dangle = m_angle - c_angle; //How much the box needs to be rotated
+    if (dangle>=360) {
+      dangle-=360;
+    } //clamping
+    if (dangle<0) {
+      dangle+=360;
+    } //clamping
+    angle =  q_angle + dangle; //Apply the rotation
+    if (angle>=360) {
+      angle -= 360;
+    } //clamping
   }
 }
 
@@ -177,6 +275,12 @@ void mouseReleased()
     }
   }
 }
+
+void dragLogic()
+{
+  Destination d = destinations.get(trialIndex);
+}
+
 
 //probably shouldn't modify this, but email me if you want to for some good reason.
 public boolean checkForSuccess()
