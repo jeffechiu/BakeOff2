@@ -97,55 +97,98 @@ void draw() {
   translate(logoX, logoY);
   rotate(radians(logoRotation));
   noStroke();
-  fill(60, 60, 192, 192);
+  
+  Destination d = destinations.get(trialIndex);  
+  boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
+  boolean closeRotation = calculateDifferenceBetweenAngles(d.rotation, logoRotation)<=5;
+  boolean closeZ = abs(d.z - logoZ)<inchToPix(.05f); //has to be within +-0.05"  
+  if(closeRotation){
+    fill(255, 0, 0);
+    circle(0, 0, 15);
+  }
+  if(closeZ){
+    fill(255);
+  }else{
+    fill(60, 60, 192, 192);
+  }if(closeDist){
+    stroke(50, 168, 82);
+  }
+  
+  if (closeRotation && closeZ && closeDist) {
+    fill(0, 255, 0);
+  }
+  
   rect(0, 0, logoZ, logoZ);
   popMatrix();
 
   //===========DRAW EXAMPLE CONTROLS=================
   fill(255);
   scaffoldControlLogic(); //you are going to want to replace this!
+  textSize(20);
   text("Trial " + (trialIndex+1) + " of " +trialCount, width/2, inchToPix(.8f));
 }
 
 //my example design for control, which is terrible
 void scaffoldControlLogic()
 {
+  fill(200);
+  noStroke();
+  //Joystick circle
+  circle(inchToPix(1.2f), height - inchToPix(1.2f), inchToPix(2f));
+  fill(0);
+  textSize(12);
+  text("Confirm", inchToPix(1.2f), height - inchToPix(1.2f));
+  
+  
+  if(checkForSuccess()){
+    fill(0, 255, 0);
+  }else{
+    fill(255);
+  }
+  noStroke();
+  //Confirm Button
+  circle(inchToPix(1.2f), height - inchToPix(1.2f), inchToPix(.7f));
+  
+  
+  fill(0);
+  textSize(12);
+  text("Confirm", inchToPix(1.2f), height - inchToPix(1.2f));
+  
+  textSize(50);
+  fill(220);
+  //minus circle
+  circle(inchToPix(1.2f), height-inchToPix(0.55f), inchToPix(.5f));
+  
+  //plus circle
+  circle(inchToPix(1.2f), height-inchToPix(1.85f), inchToPix(.5f));
+  
+  //CCW Cirlce
+  circle(inchToPix(0.55f), height-inchToPix(1.2f), inchToPix(.5f));
+  
+  //CW Circle
+  circle(inchToPix(1.85f), height-inchToPix(1.2f), inchToPix(.5f));
+  
+  fill(0);
+  text("-", inchToPix(1.2f), height-inchToPix(0.4f));
+  if (mousePressed && dist(inchToPix(1.2f), height-inchToPix(0.5f), mouseX, mouseY)<inchToPix(.2f))
+    logoZ = constrain(logoZ-inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone!
+  
+  textSize(40);
+  text("+", inchToPix(1.2f), height-inchToPix(1.65f));
+  if (mousePressed && dist(inchToPix(1.2f), height-inchToPix(1.8f), mouseX, mouseY)<inchToPix(.2f))
+    logoZ = constrain(logoZ+inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone! 
+  
+ 
   //upper left corner, rotate counterclockwise
-  text("CCW", inchToPix(.4f), inchToPix(.4f));
-  if (mousePressed && dist(0, 0, mouseX, mouseY)<inchToPix(.8f))
+  textSize(15);
+  text("CCW", inchToPix(0.55f), height-inchToPix(1.2f));
+  if (mousePressed && dist(inchToPix(0.55f), height-inchToPix(1.2f), mouseX, mouseY)<inchToPix(.2f))
     logoRotation--;
 
   //upper right corner, rotate clockwise
-  text("CW", width-inchToPix(.4f), inchToPix(.4f));
-  if (mousePressed && dist(width, 0, mouseX, mouseY)<inchToPix(.8f))
+  text("CW", inchToPix(1.85f), height-inchToPix(1.2f));
+  if (mousePressed && dist(inchToPix(1.85f), height-inchToPix(1.2f), mouseX, mouseY)<inchToPix(.2f))
     logoRotation++;
-
-  //lower left corner, decrease Z
-  text("-", inchToPix(.4f), height-inchToPix(.4f));
-  if (mousePressed && dist(0, height, mouseX, mouseY)<inchToPix(.8f))
-    logoZ = constrain(logoZ-inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone!
-
-  //lower right corner, increase Z
-  text("+", width-inchToPix(.4f), height-inchToPix(.4f));
-  if (mousePressed && dist(width, height, mouseX, mouseY)<inchToPix(.8f))
-    logoZ = constrain(logoZ+inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone! 
-
-  //left middle, move left
-  text("left", inchToPix(.4f), height/2);
-  if (mousePressed && dist(0, height/2, mouseX, mouseY)<inchToPix(.8f))
-    logoX-=inchToPix(.02f);
-
-  text("right", width-inchToPix(.4f), height/2);
-  if (mousePressed && dist(width, height/2, mouseX, mouseY)<inchToPix(.8f))
-    logoX+=inchToPix(.02f);
-
-  text("up", width/2, inchToPix(.4f));
-  if (mousePressed && dist(width/2, 0, mouseX, mouseY)<inchToPix(.8f))
-    logoY-=inchToPix(.02f);
-
-  text("down", width/2, height-inchToPix(.4f));
-  if (mousePressed && dist(width/2, height, mouseX, mouseY)<inchToPix(.8f))
-    logoY+=inchToPix(.02f);
 }
 
 
@@ -158,11 +201,19 @@ void mousePressed()
   }
 }
 
+void mouseDragged() {
+  //dragging movement of box
+  if (mouseX > width/2+logoX-(logoZ/2) && mouseX < width/2+logoX+(logoZ/2) && mouseY > height/2+logoY-(logoZ/2) && mouseY < height/2+logoY+(logoZ/2)) {
+    logoX = mouseX-width/2;
+    logoY = mouseY-height/2;
+  }
+}
+
 
 void mouseReleased()
 {
-  //check to see if user clicked middle of screen within 3 inches, which this code uses as a submit button
-  if (dist(width/2, height/2, mouseX, mouseY)<inchToPix(3f))
+  //check to see if user clicked submit button
+  if (mouseX > inchToPix(0.85f) && mouseX < inchToPix(1.55f) && mouseY > height-inchToPix(1.55f) && mouseY < height-inchToPix(0.85f))
   {
     if (userDone==false && !checkForSuccess())
       errorCount++;
