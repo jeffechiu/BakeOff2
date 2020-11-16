@@ -22,6 +22,10 @@ float logoY = 0;
 float logoZ = 50f;
 float logoRotation = 0;
 
+boolean expand = false;
+int oldX;
+int oldY;
+
 private class Destination
 {
   float x = 0;
@@ -96,7 +100,7 @@ void draw() {
   pushMatrix();
   translate(width/2, height/2); //center the drawing coordinates to the center of the screen
   translate(logoX, logoY);
-  rotate(radians(logoRotation));
+  rotate(degrees(angle/36));
   noStroke();
   Destination d = destinations.get(trialIndex);  
   boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
@@ -131,41 +135,41 @@ void draw() {
 void scaffoldControlLogic()
 {
   //upper left corner, rotate counterclockwise
-  text("CCW", inchToPix(.4f), inchToPix(.4f));
-  if (mousePressed && dist(0, 0, mouseX, mouseY)<inchToPix(.8f))
-    logoRotation--;
+  //text("CCW", inchToPix(.4f), inchToPix(.4f));
+  //if (mousePressed && dist(0, 0, mouseX, mouseY)<inchToPix(.8f))
+  //  logoRotation--;
 
-  //upper right corner, rotate clockwise
-  text("CW", width-inchToPix(.4f), inchToPix(.4f));
-  if (mousePressed && dist(width, 0, mouseX, mouseY)<inchToPix(.8f))
-    logoRotation++;
+  ////upper right corner, rotate clockwise
+  //text("CW", width-inchToPix(.4f), inchToPix(.4f));
+  //if (mousePressed && dist(width, 0, mouseX, mouseY)<inchToPix(.8f))
+  //  logoRotation++;
 
   //lower left corner, decrease Z
   text("-", inchToPix(.4f), height-inchToPix(.4f));
   if (mousePressed && dist(0, height, mouseX, mouseY)<inchToPix(.8f))
-    logoZ = constrain(logoZ-inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone!
+    logoZ = constrain(logoZ-inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone!
 
   //lower right corner, increase Z
   text("+", width-inchToPix(.4f), height-inchToPix(.4f));
   if (mousePressed && dist(width, height, mouseX, mouseY)<inchToPix(.8f))
-    logoZ = constrain(logoZ+inchToPix(.02f), .01, inchToPix(4f)); //leave min and max alone! 
+    logoZ = constrain(logoZ+inchToPix(.03f), .01, inchToPix(4f)); //leave min and max alone! 
 
-  //left middle, move left
-  text("left", inchToPix(.4f), height/2);
-  if (mousePressed && dist(0, height/2, mouseX, mouseY)<inchToPix(.8f))
-    logoX-=inchToPix(.02f);
+  ////left middle, move left
+  //text("left", inchToPix(.4f), height/2);
+  //if (mousePressed && dist(0, height/2, mouseX, mouseY)<inchToPix(.8f))
+  //  logoX-=inchToPix(.02f);
 
-  text("right", width-inchToPix(.4f), height/2);
-  if (mousePressed && dist(width, height/2, mouseX, mouseY)<inchToPix(.8f))
-    logoX+=inchToPix(.02f);
+  //text("right", width-inchToPix(.4f), height/2);
+  //if (mousePressed && dist(width, height/2, mouseX, mouseY)<inchToPix(.8f))
+  //  logoX+=inchToPix(.02f);
 
-  text("up", width/2, inchToPix(.4f));
-  if (mousePressed && dist(width/2, 0, mouseX, mouseY)<inchToPix(.8f))
-    logoY-=inchToPix(.02f);
+  //text("up", width/2, inchToPix(.4f));
+  //if (mousePressed && dist(width/2, 0, mouseX, mouseY)<inchToPix(.8f))
+  //  logoY-=inchToPix(.02f);
 
-  text("down", width/2, height-inchToPix(.4f));
-  if (mousePressed && dist(width/2, height, mouseX, mouseY)<inchToPix(.8f))
-    logoY+=inchToPix(.02f);
+  //text("down", width/2, height-inchToPix(.4f));
+  //if (mousePressed && dist(width/2, height, mouseX, mouseY)<inchToPix(.8f))
+  //  logoY+=inchToPix(.02f);
 }
 
 void expandCirclesIn()
@@ -186,66 +190,46 @@ void expandCirclesOut()
   circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
 }
 
+float c_angle = 0;
+float q_angle = 0;
+float angle = 0;
 
+void mousePressed() {
+  c_angle = atan2(mouseY - (logoY+height/2), mouseX - (logoX+width/2)); //The initial mouse rotation
+  q_angle = angle; //Initial box rotation
 
-void mousePressed()
-{
   if (startTime == 0) //start time on the instant of the first user click
   {
     startTime = millis();
     println("time started!");
-    
   }
-  
-  
+  oldX = mouseX;
+  oldY = mouseY;
 }
-/*
 
-void mouseDragged()
-{
+void mouseDragged() {
+    //dragging movement of box
+
+  if (mouseX > width/2+logoX-(logoZ/2) && mouseX < width/2+logoX+(logoZ/2) && mouseY > height/2+logoY-(logoZ/2) && mouseY < height/2+logoY+(logoZ/2)) {
+
+    logoX = mouseX-width/2;
+    logoY = mouseY-height/2;
+  } else {
+      float m_angle = atan2(mouseY - (logoY+height/2), mouseX - (logoX+width/2));
   
-  /*
-  if (mouseX > width/2+logoX-logoZ/2-inchToPix(.075f) && mouseX < width/2+logoX-logoZ/2+inchToPix(.075f) && mouseY > height/2+logoY-logoZ/2-inchToPix(.075f) &&  mouseY < height/2+logoY-logoZ/2+inchToPix(.075f)) {
-    print("it happened");
-    float distance = dist(mouseX, mouseY, width/2+logoX-logoZ/2, height/2+logoX-logoZ/2);
-    logoZ = constrain(logoZ+distance, .01, inchToPix(4f)); //leave min and max alone!
-    float newX = (mouseX+(width/2+logoX-logoZ/2))/2 - width/2 + logoZ/2;
-    float newY = (mouseY+(height/2+logoY-logoZ/2))/2 - height/2 + logoZ/2;
-    logoX = newX;
-    logoY = newY;
-    print(logoZ);
-    
+      float dangle = m_angle - c_angle; //How much the box needs to be rotated
+      if (dangle>=360) {
+        dangle-=360;
+      } //clamping
+      if (dangle<0) {
+        dangle+=360;
+      } //clamping
+      angle =  q_angle + dangle; //Apply the rotation
+      if (angle>=360) {
+        angle -= 360;
+      } //clamping
   }
-  */
-  
-  //dragging movement
-  
-  //if (mouseX > width/2+logoX-(logoZ/2) && mouseX < width/2+logoX+(logoZ/2) && mouseY > height/2+logoY-(logoZ/2) && mouseY < height/2+logoY+(logoZ/2)) {
-
-    //logoX = mouseX-width/2;
-    //logoY = mouseY-height/2;
-    /*
-    if (circlesIn == false) {
-          print("happened");
-          fill(255, 255, 255);
-          circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
-          circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
-          circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
-          circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
-          circlesIn = true;
-        }
-        else {
-        fill(255, 255, 255, 0);
-        circle(width/2+logoX-logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
-        circle(width/2+logoX-logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
-        circle(width/2+logoX+logoZ/2, height/2+logoY-logoZ/2, inchToPix(.15f));
-        circle(width/2+logoX+logoZ/2, height/2+logoY+logoZ/2, inchToPix(.15f));
-        circlesIn = false;
-        }
-        */
-
-
-
+}
 
 void mouseReleased()
 {
@@ -263,7 +247,6 @@ void mouseReleased()
       finishTime = millis();
     }
   }
-  
 }
 
 void dragLogic()
@@ -275,10 +258,10 @@ void dragLogic()
 //probably shouldn't modify this, but email me if you want to for some good reason.
 public boolean checkForSuccess()
 {
-  Destination d = destinations.get(trialIndex);	
+  Destination d = destinations.get(trialIndex);  
   boolean closeDist = dist(d.x, d.y, logoX, logoY)<inchToPix(.05f); //has to be within +-0.05"
   boolean closeRotation = calculateDifferenceBetweenAngles(d.rotation, logoRotation)<=5;
-  boolean closeZ = abs(d.z - logoZ)<inchToPix(.05f); //has to be within +-0.05"	
+  boolean closeZ = abs(d.z - logoZ)<inchToPix(.05f); //has to be within +-0.05"  
 
   println("Close Enough Distance: " + closeDist + " (logo X/Y = " + d.x + "/" + d.y + ", destination X/Y = " + logoX + "/" + logoY +")");
   println("Close Enough Rotation: " + closeRotation + " (rot dist="+calculateDifferenceBetweenAngles(d.rotation, logoRotation)+")");
